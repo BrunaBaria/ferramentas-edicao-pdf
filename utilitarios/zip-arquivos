@@ -1,0 +1,23 @@
+import os
+import zipfile
+
+def zipar_pasta(pasta_origem, arquivo_zip_destino):
+    """
+    Compacta uma pasta em um arquivo ZIP.
+
+    :param pasta_origem: Caminho da pasta a ser compactada.
+    :param arquivo_zip_destino: Caminho do arquivo ZIP de saída.
+    """
+    with zipfile.ZipFile(arquivo_zip_destino, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for raiz, _, arquivos in os.walk(pasta_origem):
+            for arquivo in arquivos:
+                caminho_completo = os.path.join(raiz, arquivo)
+                caminho_relativo = os.path.relpath(caminho_completo, pasta_origem)
+                zipf.write(caminho_completo, caminho_relativo)
+    print(f"Pasta '{pasta_origem}' compactada em '{arquivo_zip_destino}' com sucesso!")
+
+# Exemplo de uso
+if __name__ == "__main__":
+    pasta = r"C:\Users\Bruna\Documentos\Teste"  # caminho da pasta a ser compactada
+    destino = r"C:\Users\Bruna\Documentos\saida.zip"  # caminho do zip gerado
+    zipar_pasta(pasta, destino)
